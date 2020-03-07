@@ -2,7 +2,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <set>
 #include <windows.h>
 #include "Line.h"
 #include "Intersection.h"
@@ -90,8 +89,8 @@ int Counter::CountIntersections() {
 		for (size_t j = 0; j < i; j++) {
 			Line* line2 = lineSet->at(j);
 			if (!line1->isParallel(line2)) {
-				Intersection* intsec = new Intersection(line1, line2);
-				intersectionSet->insert(*intsec);
+				Intersection intsec(line1, line2);
+				intersectionSet->insert(intsec);
 			}
 		}
 	}
@@ -102,21 +101,15 @@ int main(int argc, char** argv) {
 	int count = 0;
 	ifstream infile;
 	ofstream outfile;
-	infile.open("input.txt");
-	if (!infile.is_open()) {
-		cout << "error!" << endl;
-		return -1;
+	while (count < argc) {
+		if ((string)argv[count] == "-i") {
+			infile.open(argv[count + 1]);
+		}
+		else if ((string)argv[count] == "-o") {
+			outfile.open(argv[count + 1]);
+		}
+		count++;
 	}
-	outfile.open("output.txt");
-	//while (count < argc) {
-	//	if ((string)argv[count] == "-i") {
-	//		infile.open(argv[count + 1]);
-	//	}
-	//	else if ((string)argv[count] == "-o") {
-	//		outfile.open(argv[count + 1]);
-	//	}
-	//	count++;
-	//}
 	Counter* counter = new Counter();
 	int n;
 	string op;
@@ -127,12 +120,15 @@ int main(int argc, char** argv) {
 		infile >> op >> x1 >> y1 >> x2 >> y2;
 		if (op == "L") {
 			Line* line = new Line(x1, y1, x2, y2);
-			line->ShowLine();
+			//line->ShowLine();
 			counter->addLine(line);
 		}
 	}
 	infile.close();
-	outfile << counter->CountIntersections() << endl;
+	int ans;
+	ans = counter->CountIntersections();
+	cout << ans << endl;
+	//outfile << ans << endl;
+	delete counter;
 	outfile.close();
-	//cout << 1/(1e7+1)-1/(1e7) << endl;
 }

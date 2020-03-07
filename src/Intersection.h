@@ -19,3 +19,16 @@ public:
 	~Intersection();
 private:
 };
+
+namespace std
+{
+	template<>
+	struct hash<Intersection>
+	{
+		size_t operator() (const Intersection& s) const noexcept
+		{
+			return  hash<decltype(s.xdeno)>()(s.xnume) +
+				hash<decltype(s.ydeno)>()(s.ynume);
+		}
+	}; // 间接调用原生Hash.
+}
