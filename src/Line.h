@@ -13,6 +13,7 @@ public:
 	int C;
 	Line(int, int, int, int);
 	~Line();
+	bool isParallel(Line*);
 	void ShowLine();
 private:
 

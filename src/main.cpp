@@ -1,13 +1,20 @@
 #include <iostream>
+#include <fstream>
 #include <string>
+#include <vector>
+#include <set>
+#include <windows.h>
 #include "Line.h"
 #include "Intersection.h"
+#include "Counter.h"
+
 #define A1 (line1->A)
 #define B1 (line1->B)
 #define C1 (line1->C)
 #define A2 (line2->A)
 #define B2 (line2->B)
 #define C2 (line2->C)
+
 using namespace std;
 
 Line::Line(int x1, int y1, int x2, int y2)
@@ -39,6 +46,10 @@ void Line::ShowLine() {
 	cout << to_string(A) + "x+" + to_string(B) + "y+" + to_string(C) + "=0" << endl;
 }
 
+bool Line::isParallel(Line* lineb) {
+	return (A * lineb->B == B * lineb->A);
+}
+
 Intersection::Intersection(Line* line1, Line* line2) {
 	xnume = C1 * B2 - C2 * B1;
 	xdeno = B1 * A2 - B2 * A1;
@@ -46,22 +57,82 @@ Intersection::Intersection(Line* line1, Line* line2) {
 	ydeno = xdeno;
 }
 
+bool Intersection::operator ==(const Intersection& intsec2) const {
+	return (xnume * intsec2.xdeno == intsec2.xnume * xdeno
+		&& ynume * intsec2.ydeno == intsec2.ynume * ydeno);
+}
+
+bool Intersection::operator <(const Intersection& intsec2) const {
+	return (xnume * intsec2.xdeno < intsec2.xnume * xdeno
+		|| (xnume * intsec2.xdeno == intsec2.xnume * xdeno
+			&& ynume * intsec2.ydeno < intsec2.ynume * ydeno));
+}
+
+bool Intersection::operator >(const Intersection& intsec2) const {
+	return (xnume * intsec2.xdeno > intsec2.xnume * xdeno
+		|| (xnume * intsec2.xdeno == intsec2.xnume * xdeno
+			&& ynume * intsec2.ydeno > intsec2.ynume * ydeno));
+}
+
 Intersection::~Intersection() 
 {
 }
 
-int main(char argc, char** argv) {
+Counter::Counter() {}
+
+void Counter::addLine(Line* line) {
+	lineSet->push_back(line);
+}
+
+int Counter::CountIntersections() {
+	for (size_t i = 0; i < lineSet->size(); i++) {
+		Line* line1 = lineSet->at(i);
+		for (size_t j = 0; j < i; j++) {
+			Line* line2 = lineSet->at(j);
+			if (!line1->isParallel(line2)) {
+				Intersection* intsec = new Intersection(line1, line2);
+				intersectionSet->insert(*intsec);
+			}
+		}
+	}
+	return intersectionSet->size();
+}
+
+int main(int argc, char** argv) {
+	int count = 0;
+	ifstream infile;
+	ofstream outfile;
+	infile.open("input.txt");
+	if (!infile.is_open()) {
+		cout << "error!" << endl;
+		return -1;
+	}
+	outfile.open("output.txt");
+	//while (count < argc) {
+	//	if ((string)argv[count] == "-i") {
+	//		infile.open(argv[count + 1]);
+	//	}
+	//	else if ((string)argv[count] == "-o") {
+	//		outfile.open(argv[count + 1]);
+	//	}
+	//	count++;
+	//}
+	Counter* counter = new Counter();
 	int n;
 	string op;
 	int x1, y1, x2, y2;
-	cin >> n;
+	infile >> n;
+	int A[10] = { 0 };
 	while (n--) {
-		cin >> op >> x1 >> y1 >> x2 >> y2;
+		infile >> op >> x1 >> y1 >> x2 >> y2;
 		if (op == "L") {
 			Line* line = new Line(x1, y1, x2, y2);
 			line->ShowLine();
-			delete line;
+			counter->addLine(line);
 		}
 	}
-	cout << 1/(1e7+1)-1/(1e7) << endl;
+	infile.close();
+	outfile << counter->CountIntersections() << endl;
+	outfile.close();
+	//cout << 1/(1e7+1)-1/(1e7) << endl;
 }
