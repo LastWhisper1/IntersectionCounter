@@ -128,7 +128,7 @@ int main(int argc, char** argv) {
 	int ans;
 	ans = counter->CountIntersections();
 	cout << ans << endl;
-	//outfile << ans << endl;
+	outfile << ans << endl;
 	delete counter;
 	outfile.close();
 }

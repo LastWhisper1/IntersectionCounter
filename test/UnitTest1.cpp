@@ -46,6 +46,26 @@ namespace UnitTest1
 			counter->addLine(line4);
 			Assert::AreEqual(4, counter->CountIntersections());
 		}
+		TEST_METHOD(TestMethod4)
+		{
+			Line* line1 = new Line(-100, -99, -99, 100);
+			Line* line2 = new Line(-99, 100, 100, 99);
+			Line* line3 = new Line(100, 99, 99, -100);
+			Line* line4 = new Line(90, -100, -100, -99);
+			Counter* counter = new Counter();
+			counter->addLine(line1);
+			counter->addLine(line2);
+			counter->addLine(line3);
+			counter->addLine(line4);
+			Assert::AreEqual(5, counter->CountIntersections());
+		}
+		TEST_METHOD(TestMethod5)
+		{
+			Line* line1 = new Line(114, 514, 1919, 810);
+			Counter* counter = new Counter();
+			counter->addLine(line1);
+			Assert::AreEqual(0, counter->CountIntersections());
+		}
 	};
 	TEST_CLASS(IntersectionTest_Border)
 	{
@@ -83,6 +103,21 @@ namespace UnitTest1
 			counter->addLine(line2);
 			counter->addLine(line3);
 			Assert::AreEqual(2, counter->CountIntersections());
+		}
+		TEST_METHOD(TestMethod5)
+		{
+			Line* line1 = new Line(0, 0, 1, 1);
+			Line* line2 = new Line(1, 0, 0, 1);
+			Line* line3 = new Line(1, 2, 2, 0);
+			Line* line4 = new Line(0, 3, 1, 2);
+			Line* line5 = new Line(0, 1, 2, 2);
+			Counter* counter = new Counter();
+			counter->addLine(line1);
+			counter->addLine(line2);
+			counter->addLine(line3);
+			counter->addLine(line4);
+			counter->addLine(line5);
+			Assert::AreEqual(9, counter->CountIntersections());
 		}
 	};
 }
