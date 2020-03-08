@@ -45,32 +45,53 @@ void Line::ShowLine() {
 	cout << to_string(A) + "x+" + to_string(B) + "y+" + to_string(C) + "=0" << endl;
 }
 
-bool Line::isParallel(Line* lineb) {
+inline bool Line::isParallel(Line* lineb) {
 	return (A * lineb->B == B * lineb->A);
 }
 
 Intersection::Intersection(Line* line1, Line* line2) {
+#ifdef DOUBLE_MODE
+	int xnume = C1 * B2 - C2 * B1;
+	int xdeno = B1 * A2 - B2 * A1;
+	int ynume = A1 * C2 - A2 * C1;
+	int ydeno = xdeno;
+	x = (double)xnume / xdeno;
+	y = (double)ynume / ydeno;
+#else
 	xnume = C1 * B2 - C2 * B1;
 	xdeno = B1 * A2 - B2 * A1;
 	ynume = A1 * C2 - A2 * C1;
 	ydeno = xdeno;
+#endif //DOUBLE_MODE
 }
 
 bool Intersection::operator ==(const Intersection& intsec2) const {
+#ifdef DOUBLE_MODE
+	return x == intsec2.x && y == intsec2.y;
+#else
 	return (xnume * intsec2.xdeno == intsec2.xnume * xdeno
 		&& ynume * intsec2.ydeno == intsec2.ynume * ydeno);
+#endif // DOUBLE_MODE
 }
 
 bool Intersection::operator <(const Intersection& intsec2) const {
+#ifdef DOUBLE_MODE
+	return x < intsec2.x || (x == intsec2.x && y < intsec2.y);
+#else
 	return (xnume * intsec2.xdeno < intsec2.xnume * xdeno
 		|| (xnume * intsec2.xdeno == intsec2.xnume * xdeno
 			&& ynume * intsec2.ydeno < intsec2.ynume * ydeno));
+#endif // DOUBLE_MODE
 }
 
 bool Intersection::operator >(const Intersection& intsec2) const {
-	return (xnume * intsec2.xdeno > intsec2.xnume * xdeno
+#ifdef DOUBLE_MODE
+	return x > intsec2.x || (x == intsec2.x && y > intsec2.y);
+#else
+	return (xnume * intsec2.xdeno > intsec2.xnume* xdeno
 		|| (xnume * intsec2.xdeno == intsec2.xnume * xdeno
-			&& ynume * intsec2.ydeno > intsec2.ynume * ydeno));
+			&& ynume * intsec2.ydeno > intsec2.ynume* ydeno));
+#endif // DOUBLE_MODE
 }
 
 Intersection::~Intersection() 
@@ -79,7 +100,7 @@ Intersection::~Intersection()
 
 Counter::Counter() {}
 
-void Counter::addLine(Line* line) {
+inline void Counter::addLine(Line* line) {
 	lineSet->push_back(line);
 }
 
@@ -115,6 +136,7 @@ int main(int argc, char** argv) {
 	string op;
 	int x1, y1, x2, y2;
 	infile >> n;
+	cout << n;
 	int A[10] = { 0 };
 	while (n--) {
 		infile >> op >> x1 >> y1 >> x2 >> y2;
