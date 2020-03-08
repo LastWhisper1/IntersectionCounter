@@ -41,8 +41,8 @@ Line::~Line()
 {
 }
 
-void Line::ShowLine() {
-	cout << to_string(A) + "x+" + to_string(B) + "y+" + to_string(C) + "=0" << endl;
+string Line::ShowLine() {
+	return to_string(A) + "x+" + to_string(B) + "y+" + to_string(C) + "=0";
 }
 
 inline bool Line::isParallel(Line* lineb) {

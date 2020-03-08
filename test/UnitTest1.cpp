@@ -13,14 +13,18 @@ namespace UnitTest1
 	TEST_CLASS(IntersectionTest_Naive)
 	{
 	public:
-		
 		TEST_METHOD(TestMethod1)
+		{
+			Line* line1 = new Line(2, 3, 3, 6);
+			Assert::AreEqual(line1->ShowLine(), (string)"3x+-1y+-3=0");
+		}
+		TEST_METHOD(TestMethod2)
 		{
 			Line* line1 = new Line(0, 4, 0, 8);
 			Line* line2 = new Line(2, 3, 2, 6);
 			Assert::IsTrue(line1->isParallel(line2));
 		}
-		TEST_METHOD(TestMethod2)
+		TEST_METHOD(TestMethod3)
 		{
 			Line* line1 = new Line(0, 0, 0, 1);
 			Line* line2 = new Line(0, 0, 1, 0);
@@ -33,7 +37,7 @@ namespace UnitTest1
 			counter->addLine(line4);
 			Assert::AreEqual(3, counter->CountIntersections());
 		}
-		TEST_METHOD(TestMethod3)
+		TEST_METHOD(TestMethod4)
 		{
 			Line* line1 = new Line(-10, -9, -9, 10);
 			Line* line2 = new Line(-9, 10, 10, 9);
@@ -46,7 +50,7 @@ namespace UnitTest1
 			counter->addLine(line4);
 			Assert::AreEqual(4, counter->CountIntersections());
 		}
-		TEST_METHOD(TestMethod4)
+		TEST_METHOD(TestMethod5)
 		{
 			Line* line1 = new Line(-100, -99, -99, 100);
 			Line* line2 = new Line(-99, 100, 100, 99);
@@ -59,12 +63,20 @@ namespace UnitTest1
 			counter->addLine(line4);
 			Assert::AreEqual(5, counter->CountIntersections());
 		}
-		TEST_METHOD(TestMethod5)
+		TEST_METHOD(TestMethod6)
 		{
 			Line* line1 = new Line(114, 514, 1919, 810);
 			Counter* counter = new Counter();
 			counter->addLine(line1);
 			Assert::AreEqual(0, counter->CountIntersections());
+		}
+		TEST_METHOD(TestMethod7)
+		{
+			Line* line1 = new Line(0, 1, 4, 2);
+			Line* line2 = new Line(7, 6, 9, 0);
+			Intersection* insec = new Intersection(line1, line2);
+			Assert::AreEqual(insec->xnume / insec->xdeno, 8);
+			Assert::AreEqual(insec->ynume / insec->ydeno, 3);
 		}
 	};
 	TEST_CLASS(IntersectionTest_Border)
