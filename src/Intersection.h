@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-//#define DOUBLE_MODE 0
+#define DOUBLE_MODE 0
 
 using namespace std;
 

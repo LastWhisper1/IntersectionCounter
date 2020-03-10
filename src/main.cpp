@@ -88,9 +88,9 @@ bool Intersection::operator >(const Intersection& intsec2) const {
 #ifdef DOUBLE_MODE
 	return x > intsec2.x || (x == intsec2.x && y > intsec2.y);
 #else
-	return (xnume * intsec2.xdeno > intsec2.xnume* xdeno
+	return (xnume * intsec2.xdeno > intsec2.xnume * xdeno
 		|| (xnume * intsec2.xdeno == intsec2.xnume * xdeno
-			&& ynume * intsec2.ydeno > intsec2.ynume* ydeno));
+			&& ynume * intsec2.ydeno > intsec2.ynume * ydeno));
 #endif // DOUBLE_MODE
 }
 
@@ -136,7 +136,7 @@ int main(int argc, char** argv) {
 	string op;
 	int x1, y1, x2, y2;
 	infile >> n;
-	cout << n;
+	cout << n << endl;
 	int A[10] = { 0 };
 	while (n--) {
 		infile >> op >> x1 >> y1 >> x2 >> y2;
